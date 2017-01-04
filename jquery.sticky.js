@@ -49,9 +49,14 @@
         extra = (scrollTop > dwh) ? dwh - scrollTop : 0;
 
       for (var i = 0, l = sticked.length; i < l; i++) {
-        var s = sticked[i],
-          elementTop = s.stickyWrapper.offset().top,
-          etse = elementTop - s.topSpacing - extra;
+        var s = sticked[i];
+        var elementTop = s.stickyWrapper.offset().top;
+        var etse = elementTop - s.topSpacing - extra;
+        if (s.stickToBottom) {
+            var elementBottom = s.stickyWrapper.offset().top + s.stickyWrapper.outerHeight();
+            etse = elementBottom - s.topSpacing - extra;
+        }
+
 
         //update height in case of dynamic content
         s.stickyWrapper.css('height', s.stickyElement.outerHeight());
