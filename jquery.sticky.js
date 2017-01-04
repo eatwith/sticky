@@ -22,13 +22,38 @@
         factory(jQuery);
     }
 }(function ($) {
-    var slice = Array.prototype.slice; // save ref to original slice()
-    var splice = Array.prototype.splice; // save ref to original slice()
+  var slice = Array.prototype.slice; // save ref to original slice()
+  var splice = Array.prototype.splice; // save ref to original slice()
+
+  var calcNewBottom = function(stickyEl) {
+    if (!stickyEl.bottomSpacing) {
+        return 0;
+    }
+    var newBottom;
+    var bottomSpacing = stickyEl.bottomSpacing;
+    var $window = $(window);
+    var $document = $(document);
+    var documentHeight = $document.height();
+    var windowHeight = $window.height();
+    var scrollTop = $window.scrollTop();
+    var goalPosition = documentHeight - bottomSpacing;
+    var goalOffset = goalPosition - (scrollTop + windowHeight);
+    if (goalOffset > 0) {
+        return 0;
+    }
+    if (stickyEl.sitckToBottomHidnDown) {
+      // push element away to the bottom when exceeding the bottom spacing  
+      return goalOffset;
+    }
+    return -1 * goalOffset;
+  };
+
 
   var defaults = {
       topSpacing: 0,
       bottomSpacing: 0,
       stickToBottom: false,
+      sitckToBottomHidnDown: false,
       className: 'is-sticky',
       wrapperClassName: 'sticky-wrapper',
       center: false,
@@ -59,7 +84,7 @@
 
 
         //update height in case of dynamic content
-        s.stickyWrapper.css('height', s.stickyElement.outerHeight());
+        s.stickyWrapper.css('height', s.stickyElement.outerHeight()) + s.stickyWrapper.outerHeight();
 
         if (scrollTop <= etse) {
           if (s.currentTop !== null) {
@@ -68,8 +93,8 @@
                 'width': '',
                 'position': '',
                 'top': '',
-                'bottom': '',
-                'z-index': ''
+                'bottom': '' + s.stickyWrapper.outerHeight(),
+                'z-index': '' + s.stickyWrapper.outerHeight()
               });
             s.stickyElement.parent().removeClass(s.className);
             s.stickyElement.trigger('sticky-end', [s]);
@@ -106,7 +131,7 @@
             if (s.stickToBottom) {
                 s.stickyElement
                   .css('top', '')
-                  .css('bottom', 0);
+                  .css('bottom', calcNewBottom(s));
             }
 
             s.stickyElement.parent().addClass(s.className);
@@ -149,7 +174,7 @@
             if (s.stickToBottom) {
                 s.stickyElement
                   .css('top', '')
-                  .css('bottom', 0);
+                  .css('bottom', calcNewBottom(s));
             }
           }
         }
