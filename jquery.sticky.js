@@ -35,6 +35,7 @@
       getWidthFrom: '',
       widthFromWrapper: true, // works only when .getWidthFrom is empty
       responsiveWidth: false,
+      ignoreWidth: false,
       zIndex: 'auto'
     },
     $window = $(window),
@@ -87,6 +88,9 @@
             }
             if (newWidth == null) {
                 newWidth = s.stickyElement.width();
+            }
+            if (s.ignoreWidth) {
+                newWidth = '';
             }
             s.stickyElement
               .css('width', newWidth)
@@ -158,6 +162,9 @@
             }
         } else if(s.widthFromWrapper) {
             newWidth = s.stickyWrapper.width();
+        }
+        if (s.ignoreWidth) {
+            newWidth == null;
         }
         if (newWidth != null) {
             s.stickyElement.css('width', newWidth);
