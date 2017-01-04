@@ -186,6 +186,8 @@
       for (var i = 0, l = sticked.length; i < l; i++) {
         var s = sticked[i];
         var newWidth = null;
+        //update height in case of dynamic content
+        s.stickyWrapper.css('height', s.stickyElement.outerHeight()) + s.stickyWrapper.outerHeight();
         if (s.getWidthFrom) {
             if (s.responsiveWidth) {
                 newWidth = $(s.getWidthFrom).width();
