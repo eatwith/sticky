@@ -28,6 +28,7 @@
   var defaults = {
       topSpacing: 0,
       bottomSpacing: 0,
+      stickToBottom: false,
       className: 'is-sticky',
       wrapperClassName: 'sticky-wrapper',
       center: false,
@@ -61,6 +62,7 @@
                 'width': '',
                 'position': '',
                 'top': '',
+                'bottom': '',
                 'z-index': ''
               });
             s.stickyElement.parent().removeClass(s.className);
@@ -91,6 +93,12 @@
               .css('position', 'fixed')
               .css('top', newTop)
               .css('z-index', s.zIndex);
+
+            if (s.stickToBottom) {
+                s.stickyElement
+                  .css('top', '')
+                  .css('bottom', 0);
+            }
 
             s.stickyElement.parent().addClass(s.className);
 
@@ -128,6 +136,12 @@
               .css('top', newTop)
               .css('bottom', '')
               .css('z-index', s.zIndex);
+
+            if (s.stickToBottom) {
+                s.stickyElement
+                  .css('top', '')
+                  .css('bottom', 0);
+            }
           }
         }
       }
