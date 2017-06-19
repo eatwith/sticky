@@ -51,6 +51,7 @@
 
   var defaults = {
       topSpacing: 0,
+      topTriggerOffset: 0,
       bottomSpacing: 0,
       stickToBottom: false,
       sitckToBottomHidnDown: false,
@@ -76,12 +77,11 @@
       for (var i = 0, l = sticked.length; i < l; i++) {
         var s = sticked[i];
         var elementTop = s.stickyWrapper.offset().top;
-        var etse = elementTop - s.topSpacing - extra;
+        var etse = elementTop - s.topSpacing - extra + s.topTriggerOffset;
         if (s.stickToBottom) {
             var elementBottom = s.stickyWrapper.offset().top + s.stickyWrapper.outerHeight();
             etse = elementBottom - s.topSpacing - extra;
         }
-
 
         //update height in case of dynamic content
         s.stickyWrapper.css('height', s.stickyElement.outerHeight()) + s.stickyWrapper.outerHeight();
